@@ -13,7 +13,6 @@ export type Produto = {
 
 function App() {
   const [produtos, setProdutos] = useState<Produto[]>([])
-  const [favoritos, setFavoritos] = useState<Produto[]>([])
 
   useEffect(() => {
     fetch('https://fake-api-tau.vercel.app/api/ebac_sports')
@@ -21,25 +20,12 @@ function App() {
       .then((res) => setProdutos(res))
   }, [])
 
-  function favoritar(produto: Produto) {
-    if (favoritos.find((p) => p.id === produto.id)) {
-      const favoritosSemProduto = favoritos.filter((p) => p.id !== produto.id)
-      setFavoritos(favoritosSemProduto)
-    } else {
-      setFavoritos([...favoritos, produto])
-    }
-  }
-
   return (
     <>
       <GlobalStyle />
       <div className="container">
-        <Header favoritos={favoritos} />
-        <Produtos
-          produtos={produtos}
-          favoritos={favoritos}
-          favoritar={favoritar}
-        />
+        <Header />
+        <Produtos produtos={produtos} />
       </div>
     </>
   )

@@ -1,13 +1,24 @@
-import { Produto as ProdutoType } from '../App'
+import { useDispatch, useSelector } from 'react-redux'
 import Produto from '../components/Produto'
 
 import * as S from './styles'
+import { setProdutos } from '../redux/features/produtosSlice'
+import { useEffect } from 'react'
+import { useGetProdutosQuery } from '../redux/services/api'
+import { RootState } from '../redux/app/store'
 
-type Props = {
-  produtos: ProdutoType[]
-}
+const ProdutosComponent = () => {
+  const dispatch = useDispatch()
 
-const ProdutosComponent = ({ produtos }: Props) => {
+  const { data } = useGetProdutosQuery()
+
+  const produtos = useSelector((state: RootState) => state.produtos.itens)
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setProdutos(data))
+    }
+  }, [data, dispatch])
   return (
     <>
       <S.Produtos>
